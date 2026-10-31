@@ -1,0 +1,23 @@
+.services-container {
+  padding-top: 2rem;
+}
+
+.container {
+  max-width: 95%;
+}
+
+.services-title {
+  text-align: center;
+  margin-bottom: 3rem;
+  color: #4f92bc;
+}
+
+@media (max-width: 768px) {
+  .services-container {
+    padding-top: 4rem;
+  }
+
+  .services-title {
+    margin-bottom: 2rem;
+  }
+}

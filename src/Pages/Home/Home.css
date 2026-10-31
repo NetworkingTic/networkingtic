@@ -1,0 +1,135 @@
+.container {
+  margin: 6rem 3rem;
+}
+
+.section-principal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+.section-principal img {
+  max-width: 50%;
+  height: auto;
+}
+
+.section-principal h1 {
+  font-size: 3.5rem;
+  color: var(--color-title);
+  white-space: nowrap;
+  margin-top: 0;
+  padding-top: 1.5rem;
+}
+
+@keyframes slide-fwd-right {
+  0% {
+    transform: translateZ(0) translateX(0);
+  }
+  100% {
+    transform: translateZ(160px) translateX(100px);
+  }
+}
+
+.text-focus-in {
+  animation: text-focus-in 1s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+  margin-right: 5rem;
+  background-color: white;
+  border-radius: 2rem;
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* Agrega la sombra */
+}
+
+@keyframes text-focus-in {
+  0% {
+    filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+.container-cards {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1200px) {
+  .container {
+    margin: 4rem 2rem;
+  }
+
+  .section-principal {
+    gap: 3rem;
+  }
+
+  .section-principal h1 {
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .container {
+    margin: 3rem;
+  }
+
+  .section-principal {
+    flex-direction: column;
+    gap: 5rem;
+  }
+
+  .section-principal img {
+    max-width: 70%;
+  }
+
+  .section-principal h1 {
+    font-size: 3.5rem;
+  }
+
+  .text-focus-in{
+    margin: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin: 2rem;
+  }
+
+  .section-principal {
+    gap: 3rem;
+  }
+
+  .section-principal h1 {
+    font-size: 3rem;
+  }
+
+  .text-focus-in{
+    margin: auto;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    margin: 6rem 0.5rem;
+  }
+
+  .section-principal {
+    gap: 1rem;
+  }
+
+  .section-principal img {
+    max-width: 100%;
+  }
+
+  .section-principal h1 {
+    font-size: 2.5rem;
+  }
+}

@@ -1,0 +1,30 @@
+.node {
+  animation: moveNode 10s infinite linear;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
+}
+
+.line {
+  animation: blinkLine 2s infinite alternate;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
+}
+
+@keyframes moveNode {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(10px, 10px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes blinkLine {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}

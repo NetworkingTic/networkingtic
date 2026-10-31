@@ -1,0 +1,44 @@
+/* global.css */
+:root {
+  --color-primary: #77b9d6;
+  --color-secondary: #99c9dd;
+  --color-tertiary: #eeebeb;
+  --color-background: #ffffff;
+  --color-text: #171b1d;
+  --color-title: #4f92bc;
+  --color-text-white: #ffffff;
+  --color-background-dark: #0077B6;
+  --color-background-light: #f5f5f5;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+  margin: 0;
+}
+
+.logo {
+  border: 2px solid var(--color-primary);
+}
+
+.logo.react {
+  border: 2px solid var(--color-secondary);
+}
+
+
+.main-content {
+  margin-top: 6rem; /* Ajusta este valor según la altura de tu Navbar */
+}
+
+.card-text-container {
+  background-color: white;
+  margin-top: 8rem !important;
+  border-radius: 2rem;
+  padding: 1.5rem 2rem !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* Agrega la sombra */
+}

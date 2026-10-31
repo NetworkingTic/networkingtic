@@ -1,0 +1,17 @@
+.floating-buttons {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.floating-button {
+  width: 3rem;
+  height: 3rem;
+}
+
+.floating-button-whatsapp {
+  background-color: #25d366;
+}

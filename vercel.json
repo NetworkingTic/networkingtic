@@ -1,0 +1,7 @@
+{
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "redirects": [
+    { "source": "/nosotros", "destination": "/conocenos", "permanent": true },
+    { "source": "/quien-somos", "destination": "/conocenos", "permanent": true }
+  ]
+}

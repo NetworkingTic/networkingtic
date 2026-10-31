@@ -1,0 +1,33 @@
+.footer {
+  background-color: var(--color-background-dark);
+  color: var(--color-text-white);
+  padding: 2rem 0;
+}
+
+.footer-logo img {
+  width: 10rem;
+  height: auto;
+}
+
+.footer-links,
+.footer-social {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-links a,
+.footer-social a {
+  color: var(--color-text-white);
+  text-decoration: none;
+}
+
+.footer-links a:hover,
+.footer-social a:hover {
+  color: var(--color-secondary);
+}
+
+.container-icons {
+  display: flex;
+  gap: 0.5rem;
+}

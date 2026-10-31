@@ -1,0 +1,19 @@
+.carousel-container {
+  padding: 4rem 0;
+}
+
+.carousel-item {
+  padding: 0 10px;
+}
+
+
+
+@media (max-width: 768px) {
+  .carousel-container {
+    padding: 1rem 0;
+  }
+
+  .carousel-item {
+    padding: 0 5px;
+  }
+}

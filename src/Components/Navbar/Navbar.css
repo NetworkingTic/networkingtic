@@ -1,0 +1,28 @@
+.navbar {
+  background-color: var(--color-background-dark);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  border-bottom: solid 1px var(--color-primary);
+}
+
+.navbar-item a {
+  color: var(--color-text-white);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.img-logo {
+  width: 7rem;
+  height: 6rem;
+}
+
+.img-logo:hover {
+  cursor: pointer;
+}
+
+.navbar-item h6:hover {
+  color: var(--color-secondary);
+}
