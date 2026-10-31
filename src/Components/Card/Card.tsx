@@ -25,7 +25,7 @@ export const Card: React.FC<CardProps> = ({
 
       <ModalService
         imageSrc={modalImage ?? ""}
-        altImage={altImage}
+        altImage={altImage ?? modalTitle}
         title={modalTitle}
         text={modalText}
         onClose={closeModal}
