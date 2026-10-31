@@ -59,7 +59,7 @@ El sitio es estático: `npm run build` genera `dist/` y eso se sube a cualquier 
 
 ### Opción B — Azure Static Web Apps (gratis)
 
-Ya existen workflows en `.github/workflows/`. Cada uno está ligado a un recurso de Azure por su token secreto, así que **deja solo uno** (borra el otro archivo) para no publicar dos veces. Configuración correcta: `app_location: "/"`, `output_location: "dist"`.
+Configuración correcta: `app_location: "/"`, `output_location: "dist"`.
 
 Para crearlo desde cero en otra cuenta: Portal de Azure → *Static Web Apps* → Crear → plan *Free* → origen GitHub → este repositorio, rama `main` → preset *React* → *Output location* `dist`. Azure agrega el workflow al repositorio.
 
