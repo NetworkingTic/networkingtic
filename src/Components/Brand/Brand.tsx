@@ -1,14 +1,11 @@
 import { Link } from "react-router-dom";
-import logoOjo from "@assets/logo-ojo.webp";
+import logo from "@assets/logo-networking-tic.webp";
 import "./Brand.css";
 
-// Logo de la empresa: el ojo (imagen) + el nombre escrito con la tipografía del logo (Oswald).
+// Logo oficial de la empresa, tal como la imagen original: ojo arriba y nombre debajo.
+// Solo se le quitó el fondo blanco para que se integre con el fondo de la página.
 export const Brand = ({ onClick }: { onClick?: () => void }) => (
-  <Link to="/" className="brand" aria-label="NetWorking TIC" onClick={onClick}>
-    <img src={logoOjo} alt="" width={60} height={37} />
-    <span className="brand__word" aria-hidden="true">
-      <span className="brand__name">NETWORKING</span>
-      <span className="brand__tic">TIC</span>
-    </span>
+  <Link to="/" className="brand" onClick={onClick}>
+    <img src={logo} alt="NetWorking TIC" width={308} height={269} />
   </Link>
 );

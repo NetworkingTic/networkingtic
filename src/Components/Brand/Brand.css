@@ -1,40 +1,17 @@
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
   text-decoration: none;
   flex-shrink: 0;
 }
+/* Se fija la altura y el ancho se calcula solo, para conservar las proporciones del logo */
 .brand img {
-  width: 72px;
-  height: auto;
-}
-.brand__word {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-end;
-  font-family: "Oswald", "Arial Narrow", sans-serif;
-  color: var(--logo-gray);
-  line-height: 1;
-}
-.brand__name {
-  font-size: 1.7rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-}
-.brand__tic {
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.42em;
-  margin-top: 2px;
-  margin-right: -0.42em; /* compensa el espaciado de la última letra */
+  height: 84px;
+  width: auto;
 }
 
-@media (max-width: 420px) {
+@media (max-width: 980px) {
   .brand img {
-    width: 48px;
-  }
-  .brand__name {
-    font-size: 1.2rem;
+    height: 68px;
   }
 }
