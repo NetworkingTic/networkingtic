@@ -238,12 +238,12 @@ p {
 }
 
 /* Respeta "reducir movimiento" del sistema en todo el sitio, excepto en la presentación
-   de bienvenida (Premium Brand Intro), el explorador de Servicios (.svx) y las pestañas
-   del menú (.ntab), que deben verse igual en computador y celular. */
+   de bienvenida (Premium Brand Intro), el explorador de Servicios (.svx), las pestañas
+   del menú (.ntab) y el módulo Partner (.kp), que deben verse igual en computador y celular. */
 @media (prefers-reduced-motion: reduce) {
-  *:not(.brand-intro):not(.brand-intro *):not(.svx):not(.svx *):not(.ntab):not(.ntab *),
-  *:not(.brand-intro *):not(.svx *):not(.ntab)::before,
-  *:not(.brand-intro *):not(.svx *):not(.ntab)::after {
+  *:not(.brand-intro):not(.brand-intro *):not(.svx):not(.svx *):not(.ntab):not(.ntab *):not(.kp):not(.kp *),
+  *:not(.brand-intro *):not(.svx *):not(.ntab):not(.kp *)::before,
+  *:not(.brand-intro *):not(.svx *):not(.ntab):not(.kp *)::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
