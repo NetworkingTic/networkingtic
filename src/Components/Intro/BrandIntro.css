@@ -1,0 +1,229 @@
+/* ==========================================================
+   Presentación de bienvenida (Premium Brand Intro)
+   Usa los colores del tema activo (claro u oscuro).
+   Línea de tiempo aproximada:
+   0–0,7 s   aparece la cuadrícula y el resplandor de fondo
+   0,3–1,5 s el logo se revela de arriba abajo con una línea de escaneo
+   1,5–2,2 s un destello de luz recorre la forma del logo
+   2,6 s     transición de salida hacia la página
+   ========================================================== */
+
+.brand-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  overflow: hidden;
+  cursor: pointer;
+  transition: opacity 0.65s ease, visibility 0.65s ease;
+}
+
+.brand-intro.is-leaving {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.brand-intro.is-leaving .brand-intro__stage {
+  transform: scale(1.06);
+  filter: blur(2px);
+}
+
+/* Cuadrícula técnica muy tenue, desvanecida hacia los bordes */
+.brand-intro__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 44px 44px;
+  background-position: center;
+  -webkit-mask-image: radial-gradient(circle at center, #000 0%, transparent 55%);
+  mask-image: radial-gradient(circle at center, #000 0%, transparent 55%);
+  opacity: 0;
+  animation: intro-fade 0.9s ease-out 0.05s forwards;
+}
+
+/* Resplandor azul/turquesa del logo detrás del símbolo */
+.brand-intro__glow {
+  position: absolute;
+  width: min(70vmin, 620px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--teal) 38%, transparent) 0%,
+    color-mix(in srgb, var(--brand) 18%, transparent) 38%,
+    transparent 68%
+  );
+  filter: blur(10px);
+  opacity: 0;
+  transform: scale(0.6);
+  animation: intro-glow 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+
+.brand-intro__stage {
+  position: relative;
+  height: clamp(130px, 24vh, 210px);
+  aspect-ratio: 308 / 269;
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), filter 0.65s ease;
+}
+
+/* Anillo fino que aparece alrededor del logo */
+.brand-intro__ring {
+  position: absolute;
+  inset: -22%;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--teal) 55%, transparent);
+  opacity: 0;
+  transform: scale(0.85) rotate(-20deg);
+  animation:
+    intro-ring 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.25s forwards,
+    intro-ring-out 0.8s ease 1.9s forwards;
+}
+
+/* El logo oficial, revelado progresivamente de arriba abajo */
+.brand-intro__logo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  clip-path: inset(0 0 100% 0);
+  opacity: 0.2;
+  filter: blur(6px);
+  animation: intro-reveal 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.3s forwards;
+}
+
+/* Línea de escaneo que acompaña la revelación */
+.brand-intro__scan {
+  position: absolute;
+  left: -12%;
+  right: -12%;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--teal), var(--brand), var(--teal), transparent);
+  box-shadow: 0 0 18px 2px color-mix(in srgb, var(--teal) 70%, transparent);
+  opacity: 0;
+  animation: intro-scan 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.3s forwards;
+}
+
+/* Destello de luz que recorre solo la forma del logo */
+.brand-intro__shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.95) 48%,
+    rgba(255, 255, 255, 0.95) 52%,
+    transparent 65%
+  );
+  background-size: 250% 100%;
+  background-position: 130% 0;
+  -webkit-mask: var(--logo-url) center / contain no-repeat;
+  mask: var(--logo-url) center / contain no-repeat;
+  mix-blend-mode: soft-light;
+  animation: intro-shine 0.9s ease-in-out 1.5s forwards;
+}
+:root[data-theme="dark"] .brand-intro__shine {
+  mix-blend-mode: overlay;
+}
+
+/* Barra de carga fina */
+.brand-intro__bar {
+  position: absolute;
+  bottom: clamp(48px, 12vh, 110px);
+  width: min(180px, 40vw);
+  height: 2px;
+  background: var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.brand-intro__bar span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--brand), var(--teal));
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: intro-bar 2.4s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards;
+}
+
+@keyframes intro-fade {
+  to {
+    opacity: 0.7;
+  }
+}
+@keyframes intro-glow {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+}
+@keyframes intro-ring {
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+@keyframes intro-ring-out {
+  to {
+    opacity: 0;
+    transform: scale(1.15);
+  }
+}
+@keyframes intro-reveal {
+  0% {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0.2;
+    filter: blur(6px);
+  }
+  70% {
+    filter: blur(0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+@keyframes intro-scan {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+@keyframes intro-shine {
+  to {
+    background-position: -30% 0;
+  }
+}
+@keyframes intro-bar {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-intro {
+    display: none;
+  }
+}
