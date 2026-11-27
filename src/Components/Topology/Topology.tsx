@@ -79,11 +79,16 @@ const glowSprite = (color: string) => {
   const c = document.createElement("canvas");
   c.width = c.height = 64;
   const g = c.getContext("2d")!;
+  // primero la forma (solo transparencia) y luego se pinta del color: así el halo no se agrisa
   const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
-  grd.addColorStop(0, color);
-  grd.addColorStop(0.25, color);
+  grd.addColorStop(0, "rgba(0,0,0,1)");
+  grd.addColorStop(0.25, "rgba(0,0,0,0.9)");
+  grd.addColorStop(0.6, "rgba(0,0,0,0.25)");
   grd.addColorStop(1, "rgba(0,0,0,0)");
   g.fillStyle = grd;
+  g.fillRect(0, 0, 64, 64);
+  g.globalCompositeOperation = "source-in";
+  g.fillStyle = color;
   g.fillRect(0, 0, 64, 64);
   return c;
 };
