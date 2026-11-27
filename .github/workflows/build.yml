@@ -41,6 +41,20 @@ jobs:
           git config user.email "github-actions@users.noreply.github.com"
           git add -A && git commit -qm "Build ${{ github.sha }}"
           git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" "build:build-${{ github.ref_name }}"
+      # Vista previa en GitHub Pages: https://networkingtic.github.io/networkingtic/
+      - name: Publicar vista previa en GitHub Pages
+        if: github.ref_name == 'main' && steps.build.outputs.status == '0'
+        run: |
+          npx vite build --base=/networkingtic/ --outDir /tmp/pages
+          cp /tmp/pages/index.html /tmp/pages/404.html
+          touch /tmp/pages/.nojekyll
+          rm -f /tmp/pages/.htaccess
+          cd /tmp/pages
+          git init -q -b gh-pages
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add -A && git commit -qm "Vista previa ${{ github.sha }}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" gh-pages:gh-pages
       - name: Fallar si la compilación falló
         if: steps.build.outputs.status != '0'
         run: exit 1

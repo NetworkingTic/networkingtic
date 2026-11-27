@@ -52,7 +52,7 @@ function App() {
   return (
     <ThemeModeProvider>
       <LanguageProvider>
-        <Router>
+        <Router basename={import.meta.env.BASE_URL.replace(/\/$/, "")}>
           <RouteEffects />
           <SkipLink />
           <Navbar />
