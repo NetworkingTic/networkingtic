@@ -3,6 +3,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { TikTokIcon } from "../IconsCustom/TikTokIcon";
 import { Brand } from "../Brand/Brand";
+import { NeuralBackground } from "../NeuralBackground/NeuralBackground";
 import { useLanguage } from "../../i18n/LanguageContext";
 import { CONTACT } from "../../data/contact";
 import "./Footer.css";
@@ -11,6 +12,8 @@ export const Footer = () => {
   const { t } = useLanguage();
   return (
     <footer className="site-footer">
+      <NeuralBackground />
+      <div className="site-footer__veil" aria-hidden="true" />
       <div className="wrap site-footer__grid">
         <div className="site-footer__brand">
           <Brand />

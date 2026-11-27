@@ -1,7 +1,39 @@
 .site-footer {
-  background: var(--deep);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* azul oscuro tecnológico (igual en tema claro y oscuro) */
+  background:
+    radial-gradient(120% 90% at 15% 0%, #0d3352 0%, transparent 55%),
+    radial-gradient(90% 80% at 90% 100%, #072b44 0%, transparent 60%),
+    #051522;
   color: var(--deep-ink);
   padding-top: clamp(3.5rem, 6vw, 5rem);
+}
+/* línea de luz en el borde superior */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  z-index: 2;
+  background: linear-gradient(90deg, transparent, #3fe3ff 30%, #2f8cff 70%, transparent);
+  opacity: 0.6;
+}
+/* velo que oscurece levemente la red detrás del texto para que siempre se lea bien */
+.site-footer__veil {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(5, 21, 34, 0.15), rgba(5, 21, 34, 0.55)),
+    radial-gradient(60% 70% at 30% 45%, rgba(5, 21, 34, 0.45), transparent 75%);
+}
+/* el contenido siempre por encima de la animación */
+.site-footer > .wrap {
+  position: relative;
+  z-index: 1;
 }
 
 .site-footer__grid {
