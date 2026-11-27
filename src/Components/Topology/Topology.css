@@ -14,7 +14,7 @@
   box-shadow: inset 0 0 80px 40px var(--surface);
 }
 
-.topology svg {
+.topology > svg {
   width: 100%;
   height: auto;
   overflow: visible;
@@ -70,6 +70,8 @@
   font: 500 13px/1.1 var(--font-body);
 }
 .topology__node svg {
+  width: 18px;
+  height: 18px;
   color: var(--brand);
   flex-shrink: 0;
 }
