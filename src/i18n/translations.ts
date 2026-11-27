@@ -169,6 +169,7 @@ const es = {
     sending: "Enviando...",
     success: "Mensaje enviado. Le contactaremos pronto.",
     error: "No se pudo enviar el mensaje. Revise su conexión o escríbanos por WhatsApp.",
+    rateLimit: "Ya recibimos varios mensajes suyos hace poco. Intente de nuevo en unos minutos o escríbanos por WhatsApp.",
     errors: {
       name: "Escriba su nombre",
       email: "Escriba su correo",
@@ -358,6 +359,7 @@ const en: Dictionary = {
     sending: "Sending...",
     success: "Message sent. We'll be in touch soon.",
     error: "The message could not be sent. Check your connection or reach us on WhatsApp.",
+    rateLimit: "We've received several messages from you recently. Please try again in a few minutes or reach us on WhatsApp.",
     errors: {
       name: "Enter your name",
       email: "Enter your email",

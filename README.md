@@ -39,11 +39,27 @@ npm run preview    # sirve dist/ en http://localhost:4173 para revisarlo
 
 ## Formulario de contacto
 
-Los mensajes se envían a un Google Apps Script que los guarda en una hoja de Google. Para usar otro script sin tocar el código, crea en el hosting la variable de entorno:
+Arquitectura: **Formulario web → Google Apps Script (propio) → Google Sheets → aviso a Gmail**.
 
-```
-VITE_CONTACT_ENDPOINT=https://script.google.com/macros/s/TU_ID/exec
-```
+- Hoja: `REGISTRO_CONTACTOS_PLATAFORMA`, pestaña `Mensajes`, en la cuenta de Google de NETWORKING TIC.
+- Columnas: ID, Fecha, Nombre, Correo, Teléfono, Asunto, Mensaje, Estado, Origen, Empresa, Ciudad.
+- Código del script: [`google-apps-script/Code.gs`](google-apps-script/Code.gs) (copia de lo que está pegado en Apps Script).
+- La página usa la URL `/exec` del script (constante `CONTACT_ENDPOINT` en `src/Components/ContactForm/ContactForm.tsx`).
+- La página **espera la confirmación real** del script: solo muestra "Mensaje enviado" si la fila quedó guardada.
+
+### Administrar los contactos
+
+- Abrir la hoja y cambiar la columna **Estado**: NUEVO → EN PROCESO → RESPONDIDO → CERRADO (lista desplegable, con colores).
+- Para responder, usar **Responder** en el correo de aviso: va directo al correo del cliente.
+- No cambiar el nombre de la pestaña `Mensajes` ni el orden de las columnas (el script escribe en ese orden).
+
+### Actualizar el script cuando cambie el código
+
+1. Editar `google-apps-script/Code.gs` en el repositorio y copiar su contenido.
+2. En la hoja: **Extensiones → Apps Script**, pegar sobre el código anterior y guardar.
+3. **Implementar → Gestionar implementaciones → ✏️ Editar → Versión: Nueva versión → Implementar**.
+   Así **se conserva la misma URL /exec** y la página no necesita cambios.
+   (Si se crea una implementación *nueva* en lugar de editar la existente, la URL cambia y hay que actualizarla en la página.)
 
 ## Idiomas y tema
 
