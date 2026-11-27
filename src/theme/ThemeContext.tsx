@@ -13,8 +13,8 @@ const getInitialMode = (): Mode =>
 
 // Colores en un solo lugar; los mismos valores están como variables CSS en styles.css.
 const palette = {
-  light: { bg: "#F3F6F8", surface: "#FFFFFF", ink: "#0D2131", muted: "#506273", line: "#D6DFE6", brand: "#0077B6" },
-  dark: { bg: "#08131D", surface: "#0F1F2C", ink: "#E4EDF4", muted: "#93A6B6", line: "#1F3445", brand: "#4DB4EE" },
+  light: { bg: "#F3F6F8", surface: "#FFFFFF", ink: "#0D2131", muted: "#506273", line: "#D6DFE6", brand: "#1271B2" },
+  dark: { bg: "#08131D", surface: "#0F1F2C", ink: "#E4EDF4", muted: "#93A6B6", line: "#1F3445", brand: "#5BB4DC" },
 };
 
 export const ThemeModeProvider = ({ children }: { children: ReactNode }) => {

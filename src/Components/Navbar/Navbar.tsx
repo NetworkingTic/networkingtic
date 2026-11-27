@@ -5,7 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { Link as RouterLink, NavLink } from "react-router-dom";
-import logoMark from "@assets/logo-mark.webp";
+import { Brand } from "../Brand/Brand";
 import { useLanguage } from "../../i18n/LanguageContext";
 import { useThemeMode } from "../../theme/ThemeContext";
 import "./Navbar.css";
@@ -64,12 +64,7 @@ export const Navbar = () => {
   return (
     <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
       <div className="wrap site-header__inner">
-        <RouterLink to="/" className="brand" aria-label="NetWorking TIC">
-          <img src={logoMark} alt="" width={36} height={36} />
-          <span className="brand__name">
-            NetWorking <span>TIC</span>
-          </span>
-        </RouterLink>
+        <Brand />
 
         <nav className="main-nav" aria-label="Principal">
           {links.map((l) => (

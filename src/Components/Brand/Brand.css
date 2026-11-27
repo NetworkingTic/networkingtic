@@ -1,0 +1,40 @@
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.brand img {
+  width: 60px;
+  height: auto;
+}
+.brand__word {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: "Oswald", "Arial Narrow", sans-serif;
+  color: var(--logo-gray);
+  line-height: 1;
+}
+.brand__name {
+  font-size: 1.45rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.brand__tic {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  margin-top: 2px;
+  margin-right: -0.42em; /* compensa el espaciado de la última letra */
+}
+
+@media (max-width: 420px) {
+  .brand img {
+    width: 48px;
+  }
+  .brand__name {
+    font-size: 1.2rem;
+  }
+}

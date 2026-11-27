@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { TikTokIcon } from "../IconsCustom/TikTokIcon";
-import logoMark from "@assets/logo-mark.webp";
+import { Brand } from "../Brand/Brand";
 import { useLanguage } from "../../i18n/LanguageContext";
 import { CONTACT } from "../../data/contact";
 import "./Footer.css";
@@ -13,12 +13,7 @@ export const Footer = () => {
     <footer className="site-footer">
       <div className="wrap site-footer__grid">
         <div className="site-footer__brand">
-          <Link to="/" className="brand" aria-label="NetWorking TIC">
-            <img src={logoMark} alt="" width={36} height={36} />
-            <span className="brand__name">
-              NetWorking <span>TIC</span>
-            </span>
-          </Link>
+          <Brand />
           <p>{t.footer.tagline}</p>
         </div>
 

@@ -10,14 +10,16 @@
   --ink: #0d2131;
   --muted: #506273;
   --line: #d6dfe6;
-  --brand: #0077b6;
+  --brand: #1271b2; /* azul del logo */
   --brand-ink: #ffffff;
   --brand-soft: #dceefa;
+  --teal: #52a0b8; /* turquesa del logo */
+  --logo-gray: #8e8e8e; /* gris del texto del logo */
   --deep: #0a2a40; /* banda azul profundo (igual en ambos temas) */
   --deep-ink: #e6f1f8;
   --signal: #18a66b; /* estado "en línea" */
 
-  --font-display: "Bricolage Grotesque", "IBM Plex Sans", system-ui, sans-serif;
+  --font-display: "Oswald", "Arial Narrow", system-ui, sans-serif;
   --font-body: "IBM Plex Sans", system-ui, sans-serif;
 
   --step--1: 0.875rem;
@@ -41,9 +43,11 @@
   --ink: #e4edf4;
   --muted: #93a6b6;
   --line: #1f3445;
-  --brand: #4db4ee;
+  --brand: #5bb4dc;
   --brand-ink: #06121c;
   --brand-soft: #10314a;
+  --teal: #6fbfd4;
+  --logo-gray: #b4b4b4;
   --deep: #0c2436;
   --deep-ink: #e6f1f8;
   --signal: #35d08f;
@@ -84,9 +88,9 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  font-weight: 600;
-  line-height: 1.12;
-  letter-spacing: -0.015em;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: 0;
   margin: 0;
   text-wrap: balance;
 }
