@@ -70,7 +70,7 @@ export const NeuralBackground = ({ className = "" }: { className?: string }) => 
       small = W < 640;
       linkDist = small ? 120 : 150;
       const density = small ? 5200 : 5600;
-      const count = Math.max(24, Math.min(small ? 64 : 115, Math.round((W * H) / density)));
+      const count = Math.max(24, Math.min(small ? 64 : 100, Math.round((W * H) / density)));
       nodes = Array.from({ length: count }, () => {
         const layer = Math.random() < 0.3 ? 0 : Math.random() < 0.6 ? 1 : 2;
         const a = Math.random() * Math.PI * 2;
@@ -191,15 +191,13 @@ export const NeuralBackground = ({ className = "" }: { className?: string }) => 
         const y = a.y + (b.y - a.y) * Math.min(1, s.t);
         const color = s.cyan ? CYAN : BLUE;
 
-        // estela luminosa sobre la línea recorrida
-        const grd = ctx.createLinearGradient(a.x, a.y, x, y);
-        grd.addColorStop(0, "rgba(63,227,255,0)");
-        grd.addColorStop(1, color);
-        ctx.globalAlpha = 0.85;
-        ctx.strokeStyle = grd;
+        // estela luminosa sobre el último tramo recorrido (la línea se ilumina a medida que avanza)
+        const tail = Math.max(0, Math.min(1, s.t) - 0.45);
+        ctx.globalAlpha = 0.8;
+        ctx.strokeStyle = color;
         ctx.lineWidth = small ? 1.4 : 1.8;
         ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
+        ctx.moveTo(a.x + (b.x - a.x) * tail, a.y + (b.y - a.y) * tail);
         ctx.lineTo(x, y);
         ctx.stroke();
 
