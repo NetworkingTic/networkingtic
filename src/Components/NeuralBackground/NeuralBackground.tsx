@@ -70,7 +70,7 @@ export const NeuralBackground = ({ className = "" }: { className?: string }) => 
       small = W < 640;
       linkDist = small ? 120 : 150;
       const density = small ? 5200 : 5600;
-      const count = Math.max(24, Math.min(small ? 64 : 140, Math.round((W * H) / density)));
+      const count = Math.max(24, Math.min(small ? 64 : 115, Math.round((W * H) / density)));
       nodes = Array.from({ length: count }, () => {
         const layer = Math.random() < 0.3 ? 0 : Math.random() < 0.6 ? 1 : 2;
         const a = Math.random() * Math.PI * 2;
@@ -153,19 +153,30 @@ export const NeuralBackground = ({ className = "" }: { className?: string }) => 
 
       ctx.clearRect(0, 0, W, H);
 
-      // conexiones base
+      // conexiones base: agrupadas por color e intensidad para dibujarlas en pocos trazos (rendimiento)
       ctx.lineWidth = 1;
+      const LEVELS = 6;
+      const buckets: Path2D[][] = [[], []];
       links.forEach(([i, j, d]) => {
         const a = nodes[i];
         const b = nodes[j];
         const depth = (LAYERS[a.layer].alpha + LAYERS[b.layer].alpha) / 2;
         const lit = Math.max(a.flash, b.flash);
-        ctx.globalAlpha = (1 - d / linkDist) * (0.4 + lit * 0.55) * depth;
-        ctx.strokeStyle = a.layer === 2 && b.layer === 2 ? CYAN : BLUE;
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.stroke();
+        const alpha = Math.min(1, (1 - d / linkDist) * (0.4 + lit * 0.55) * depth);
+        const level = Math.round(alpha * LEVELS);
+        if (level <= 0) return;
+        const c = a.layer === 2 && b.layer === 2 ? 1 : 0;
+        const path = (buckets[c][level] ??= new Path2D());
+        path.moveTo(a.x, a.y);
+        path.lineTo(b.x, b.y);
+      });
+      buckets.forEach((levels, c) => {
+        ctx.strokeStyle = c ? CYAN : BLUE;
+        levels.forEach((path, level) => {
+          if (!path) return;
+          ctx.globalAlpha = level / LEVELS;
+          ctx.stroke(path);
+        });
       });
 
       // señales: iluminan la línea progresivamente y saltan al siguiente nodo
@@ -215,9 +226,12 @@ export const NeuralBackground = ({ className = "" }: { className?: string }) => 
         const L = LAYERS[n.layer];
         const beat = 0.55 + 0.45 * Math.sin(time * (1.2 + n.layer * 0.35) * motion + n.phase);
         const r = (small ? 1.5 : 1.8) * L.size * (1 + n.flash * 0.8);
-        const g = r * (5 + beat * 3 + n.flash * 6);
-        ctx.globalAlpha = (0.2 + beat * 0.3 + n.flash * 0.55) * L.alpha;
-        ctx.drawImage(n.layer === 2 ? glowCyan : glowBlue, n.x - g, n.y - g, g * 2, g * 2);
+        // halo solo en las capas media y cercana (o al recibir una señal); los lejanos son solo un punto
+        if (n.layer > 0 || n.flash > 0.05) {
+          const g = r * (5 + beat * 3 + n.flash * 6);
+          ctx.globalAlpha = (0.2 + beat * 0.3 + n.flash * 0.55) * L.alpha;
+          ctx.drawImage(n.layer === 2 ? glowCyan : glowBlue, n.x - g, n.y - g, g * 2, g * 2);
+        }
         ctx.globalAlpha = (0.45 + beat * 0.45) * L.alpha;
         ctx.fillStyle = n.flash > 0.4 ? "#e9fbff" : n.layer === 2 ? CYAN : "#7fb8ff";
         ctx.beginPath();
