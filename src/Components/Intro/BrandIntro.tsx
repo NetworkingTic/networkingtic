@@ -3,34 +3,20 @@ import logo from "@assets/logo-networking-tic.webp";
 import "./BrandIntro.css";
 
 // Presentación de bienvenida con el logo oficial (la misma imagen del encabezado, sin modificar).
-// - Se muestra una sola vez por visita (no se repite al navegar entre secciones).
+// - Se muestra SIEMPRE que se carga o recarga la página (F5, Ctrl + R, botón actualizar, nueva visita).
+//   No guarda nada en el navegador: no usa localStorage, sessionStorage ni cookies.
+// - Al moverse entre secciones con el menú no se repite, porque la página no se recarga.
 // - Dura unos 2,6 s; se puede saltar con clic, tecla o rueda del mouse.
-// - Si el visitante pidió "reducir movimiento" en su sistema, no se muestra.
 // - Solo usa CSS (opacidad, transformaciones y recortes): no carga librerías ni frena la página.
 
-const SESSION_KEY = "ntic-intro-vista";
 const DURATION = 2600; // ms hasta empezar a salir
 const EXIT = 650; // ms de la transición de salida
 
-const shouldShow = () => {
-  try {
-    if (sessionStorage.getItem(SESSION_KEY)) return false;
-  } catch {
-    /* sin acceso a sessionStorage: se muestra igual */
-  }
-  return !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-};
-
 export const BrandIntro = () => {
-  const [phase, setPhase] = useState<"on" | "leaving" | "done">(() => (shouldShow() ? "on" : "done"));
+  const [phase, setPhase] = useState<"on" | "leaving" | "done">("on");
 
   useEffect(() => {
     if (phase !== "on") return;
-    try {
-      sessionStorage.setItem(SESSION_KEY, "1");
-    } catch {
-      /* ignorar */
-    }
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 

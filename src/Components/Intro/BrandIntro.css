@@ -221,9 +221,3 @@
     transform: scaleX(1);
   }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .brand-intro {
-    display: none;
-  }
-}
