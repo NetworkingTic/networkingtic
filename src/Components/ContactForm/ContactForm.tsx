@@ -9,7 +9,9 @@ import "./ContactForm.css";
 // Guarda cada mensaje en la hoja REGISTRO_CONTACTOS_PLATAFORMA y avisa por Gmail.
 // Es una dirección pública por diseño: no contiene contraseñas ni credenciales.
 // Se puede cambiar sin tocar el código con la variable VITE_CONTACT_ENDPOINT.
-const CONTACT_ENDPOINT: string = import.meta.env.VITE_CONTACT_ENDPOINT ?? "";
+const CONTACT_ENDPOINT: string =
+  import.meta.env.VITE_CONTACT_ENDPOINT ??
+  "https://script.google.com/macros/s/AKfycbwLLvIW_-oV65aUSjevhd4Cswuwg9v6yKU29Rgk9J4z3rQPk96iZjy0I1cKD5H66A-7Uw/exec";
 
 const TIMEOUT_MS = 20000;
 
