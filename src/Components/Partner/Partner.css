@@ -1289,7 +1289,7 @@
     gap: 0.3rem;
   }
   .kp-threats {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .kp-threats li:last-child {
     grid-column: 1 / -1;
@@ -1325,7 +1325,7 @@
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 480px) {
   .kp-threats {
     grid-template-columns: 1fr;
   }
