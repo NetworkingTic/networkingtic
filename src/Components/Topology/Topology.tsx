@@ -12,7 +12,7 @@ import "./Topology.css";
 // Diagrama de red del inicio: Internet → Firewall → Red principal → Servidores / Almacenamiento / Equipos.
 // Los "paquetes" recorren los enlaces; si el visitante pidió reducir movimiento, no se animan.
 
-const W = 150;
+const W = 160;
 const H = 48;
 
 type NodeDef = { key: keyof Dictionary["hero"]["nodes"]; x: number; y: number; Icon: typeof PublicIcon; core?: boolean };

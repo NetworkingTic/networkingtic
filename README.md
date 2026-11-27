@@ -45,6 +45,28 @@ Los mensajes se envían a un Google Apps Script que los guarda en una hoja de Go
 VITE_CONTACT_ENDPOINT=https://script.google.com/macros/s/TU_ID/exec
 ```
 
+## Idiomas y tema
+
+- Todos los textos están en `src/i18n/translations.ts` (español e inglés). Para cambiar un texto, edítalo ahí en los dos idiomas.
+- Los servicios están en `src/data/services.ts`, y teléfono y redes sociales en `src/data/contact.ts`.
+- Los colores de los temas claro y oscuro están al inicio de `src/styles.css`.
+- El idioma y el tema que elige cada visitante se recuerdan en su navegador.
+
+## Compilación automática
+
+Cada vez que se sube un cambio a `main`, GitHub compila el sitio (`.github/workflows/build.yml`) y guarda el resultado en la rama **`build-main`**: ahí está `networkingtic-dist.zip`, listo para subir al hosting.
+
+## Publicar en GoDaddy (hosting cPanel)
+
+1. Descarga `networkingtic-dist.zip` desde la rama `build-main` (o ejecuta `npm run build` y comprime el contenido de `dist/`).
+2. En GoDaddy: **Mis productos → Web Hosting → Administrar → cPanel → Administrador de archivos**.
+3. Entra a la carpeta **`public_html`** y borra lo que haya (por ejemplo la página de "Próximamente").
+4. **Cargar** el zip, luego clic derecho → **Extraer** dentro de `public_html`.
+5. Activa **Mostrar archivos ocultos** (Configuración, arriba a la derecha) y confirma que está el archivo **`.htaccess`**: sin él, recargar en /servicios da error 404.
+6. En cPanel → **SSL/TLS Status**, activa el certificado gratuito para que la página abra con https.
+
+> Esto sirve para el **Web Hosting (cPanel)** de GoDaddy. El **Creador de sitios web** (Website Builder) de GoDaddy no permite subir código propio.
+
 ## Publicar (producción)
 
 El sitio es estático: `npm run build` genera `dist/` y eso se sube a cualquier hosting estático. Hay dos opciones ya configuradas.
