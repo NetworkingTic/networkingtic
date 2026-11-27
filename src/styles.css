@@ -237,10 +237,12 @@ p {
   }
 }
 
+/* Respeta "reducir movimiento" del sistema en todo el sitio, excepto en la presentación
+   de bienvenida (Premium Brand Intro), que debe verse igual en computador y celular. */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *:not(.brand-intro):not(.brand-intro *),
+  *:not(.brand-intro *)::before,
+  *:not(.brand-intro *)::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
