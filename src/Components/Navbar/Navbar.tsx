@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { PointerEvent, useEffect, useRef, useState } from "react";
 import { Drawer, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -53,6 +53,24 @@ export const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Pestañas flotantes: pulso de luz al activar una pestaña y luz que sigue al cursor
+  const [pulse, setPulse] = useState("");
+  const pulseTimer = useRef(0);
+  useEffect(() => () => window.clearTimeout(pulseTimer.current), []);
+  const firePulse = (to: string) => {
+    window.clearTimeout(pulseTimer.current);
+    setPulse("");
+    requestAnimationFrame(() => setPulse(to));
+    pulseTimer.current = window.setTimeout(() => setPulse(""), 900);
+  };
+  const trackPointer = (e: PointerEvent<HTMLAnchorElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
+    e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
+  };
+  const tabClass = (to: string) => ({ isActive }: { isActive: boolean }) =>
+    `ntab${isActive ? " active" : ""}${pulse === to ? " is-pulsing" : ""}`;
+
   const links = [
     { to: "/", label: t.nav.home, end: true },
     { to: "/servicios", label: t.nav.services },
@@ -68,8 +86,16 @@ export const Navbar = () => {
 
         <nav className="main-nav" aria-label="Principal">
           {links.map((l) => (
-            <NavLink key={l.to} to={l.to} end={l.end}>
-              {l.label}
+            <NavLink
+              key={l.to}
+              to={l.to}
+              end={l.end}
+              className={tabClass(l.to)}
+              onClick={() => firePulse(l.to)}
+              onPointerMove={trackPointer}
+              onPointerDown={trackPointer}
+            >
+              <span className="ntab__label">{l.label}</span>
             </NavLink>
           ))}
         </nav>
@@ -97,8 +123,19 @@ export const Navbar = () => {
           </div>
           <nav aria-label="Principal">
             {links.map((l) => (
-              <NavLink key={l.to} to={l.to} end={l.end} onClick={() => setOpen(false)}>
-                {l.label}
+              <NavLink
+                key={l.to}
+                to={l.to}
+                end={l.end}
+                className={tabClass(l.to)}
+                onPointerDown={trackPointer}
+                onClick={() => {
+                  firePulse(l.to);
+                  // se deja ver el destello un instante antes de cerrar el menú (la navegación ya ocurrió)
+                  window.setTimeout(() => setOpen(false), 280);
+                }}
+              >
+                <span className="ntab__label">{l.label}</span>
               </NavLink>
             ))}
           </nav>

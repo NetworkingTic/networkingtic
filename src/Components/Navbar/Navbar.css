@@ -152,3 +152,133 @@
     gap: 0.75rem;
   }
 }
+
+/* ==========================================================
+   Pestañas flotantes (Floating Tabs) del menú de módulos
+   ========================================================== */
+
+.main-nav a.ntab,
+.mobile-nav nav a.ntab {
+  --mx: 50%;
+  --my: 50%;
+  position: relative;
+  isolation: isolate;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    color 0.2s ease;
+}
+
+/* luz interior que sigue al cursor (o al dedo) */
+.ntab::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(120px circle at var(--mx) var(--my), color-mix(in srgb, var(--brand) 22%, transparent), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.ntab__label {
+  position: relative;
+}
+
+/* ---- Al pasar el cursor (solo equipos con cursor) ---- */
+@media (hover: hover) {
+  .main-nav a.ntab:hover,
+  .mobile-nav nav a.ntab:hover {
+    color: var(--ink);
+    transform: translateY(-3px);
+    background-color: color-mix(in srgb, var(--brand) 7%, var(--surface));
+    border-color: color-mix(in srgb, var(--brand) 40%, transparent);
+    box-shadow:
+      0 10px 22px -12px color-mix(in srgb, var(--brand) 70%, transparent),
+      0 0 0 3px color-mix(in srgb, var(--brand) 8%, transparent),
+      0 0 18px -4px color-mix(in srgb, var(--teal) 45%, transparent);
+  }
+  .ntab:hover::before {
+    opacity: 1;
+  }
+}
+
+/* ---- Al tocar (celulares) ---- */
+.main-nav a.ntab:active,
+.mobile-nav nav a.ntab:active {
+  transform: translateY(-1px) scale(0.98);
+  border-color: color-mix(in srgb, var(--brand) 50%, transparent);
+}
+.ntab:active::before {
+  opacity: 1;
+}
+
+/* ---- Pestaña seleccionada: indicador permanente ---- */
+.main-nav a.ntab.active,
+.mobile-nav nav a.ntab.active {
+  color: var(--ink);
+  background-color: color-mix(in srgb, var(--brand) 10%, var(--surface));
+  border-color: color-mix(in srgb, var(--brand) 35%, transparent);
+  box-shadow:
+    0 6px 16px -10px color-mix(in srgb, var(--brand) 70%, transparent),
+    inset 0 0 12px -6px color-mix(in srgb, var(--teal) 70%, transparent);
+}
+/* barra inferior luminosa (la que ya existía, ahora con resplandor) */
+.main-nav a.ntab.active::after {
+  box-shadow: 0 0 10px 1px color-mix(in srgb, var(--teal) 70%, transparent);
+  border-radius: 2px;
+}
+
+/* ---- Pulso de activación al hacer clic o tocar ---- */
+.ntab.is-pulsing {
+  animation: ntab-glow 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ntab.is-pulsing::before {
+  background: radial-gradient(160px circle at var(--mx) var(--my), color-mix(in srgb, var(--teal) 55%, transparent), transparent 70%);
+  animation: ntab-flash 0.85s ease-out both;
+}
+@keyframes ntab-glow {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--teal) 65%, transparent);
+  }
+  35% {
+    box-shadow:
+      0 0 0 6px color-mix(in srgb, var(--teal) 18%, transparent),
+      0 0 26px 2px color-mix(in srgb, var(--brand) 45%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 12px transparent;
+  }
+}
+@keyframes ntab-flash {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Menú del celular: pestañas con su propio espacio y barra lateral luminosa en la seleccionada */
+.mobile-nav nav {
+  gap: 0.35rem;
+}
+.mobile-nav nav a.ntab {
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid transparent;
+}
+.mobile-nav nav a.ntab.active::after {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 22%;
+  bottom: 22%;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--brand);
+  box-shadow: 0 0 10px 1px color-mix(in srgb, var(--teal) 70%, transparent);
+}
