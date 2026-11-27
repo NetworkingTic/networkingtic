@@ -37,7 +37,11 @@ const sprite = (color: string) => {
   return c;
 };
 
-export const NeuralBackground = ({ className = "" }: { className?: string }) => {
+// Colores opcionales: por defecto azul y cian (los del pie de página).
+export type NeuralPalette = { primary: string; secondary: string; node: string };
+const DEFAULT_PALETTE: NeuralPalette = { primary: BLUE, secondary: CYAN, node: "#7fb8ff" };
+
+export const NeuralBackground = ({ className = "", palette = DEFAULT_PALETTE }: { className?: string; palette?: NeuralPalette }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -48,8 +52,10 @@ export const NeuralBackground = ({ className = "" }: { className?: string }) => 
 
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
     const motion = reduce ? 0.4 : 1;
-    const glowBlue = sprite(BLUE);
-    const glowCyan = sprite(CYAN);
+    const C1 = palette.primary;
+    const C2 = palette.secondary;
+    const glowBlue = sprite(C1);
+    const glowCyan = sprite(C2);
     const glowWhite = sprite("#e9fbff");
 
     let W = 0;
@@ -171,7 +177,7 @@ export const NeuralBackground = ({ className = "" }: { className?: string }) => 
         path.lineTo(b.x, b.y);
       });
       buckets.forEach((levels, c) => {
-        ctx.strokeStyle = c ? CYAN : BLUE;
+        ctx.strokeStyle = c ? C2 : C1;
         levels.forEach((path, level) => {
           if (!path) return;
           ctx.globalAlpha = level / LEVELS;
@@ -189,7 +195,7 @@ export const NeuralBackground = ({ className = "" }: { className?: string }) => 
         s.t += (s.speed * dt * 120) / Math.max(40, d);
         const x = a.x + (b.x - a.x) * Math.min(1, s.t);
         const y = a.y + (b.y - a.y) * Math.min(1, s.t);
-        const color = s.cyan ? CYAN : BLUE;
+        const color = s.cyan ? C2 : C1;
 
         // estela luminosa sobre el último tramo recorrido (la línea se ilumina a medida que avanza)
         const tail = Math.max(0, Math.min(1, s.t) - 0.45);
@@ -231,7 +237,7 @@ export const NeuralBackground = ({ className = "" }: { className?: string }) => 
           ctx.drawImage(n.layer === 2 ? glowCyan : glowBlue, n.x - g, n.y - g, g * 2, g * 2);
         }
         ctx.globalAlpha = (0.45 + beat * 0.45) * L.alpha;
-        ctx.fillStyle = n.flash > 0.4 ? "#e9fbff" : n.layer === 2 ? CYAN : "#7fb8ff";
+        ctx.fillStyle = n.flash > 0.4 ? "#e9fbff" : n.layer === 2 ? C2 : palette.node;
         ctx.beginPath();
         ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
         ctx.fill();
@@ -271,6 +277,7 @@ export const NeuralBackground = ({ className = "" }: { className?: string }) => 
       io.disconnect();
       document.removeEventListener("visibilitychange", onVis);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <canvas ref={canvasRef} className={`neural-bg ${className}`.trim()} aria-hidden="true" />;
