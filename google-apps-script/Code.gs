@@ -1,4 +1,8 @@
 /**
+ * @OnlyCurrentDoc  ← limita los permisos del script a ESTA hoja (no a todo su Google Drive)
+ */
+
+/**
  * ============================================================================
  *  NETWORKING TIC — Receptor del formulario de contacto
  *  Formulario web → Google Apps Script → Google Sheets → Notificación a Gmail
