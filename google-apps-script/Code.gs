@@ -164,7 +164,8 @@ function configurar() {
   // Hace que Google pida los permisos necesarios (hoja y Gmail) en este momento
   MailApp.getRemainingDailyQuota();
 
-  SpreadsheetApp.getUi().alert('Listo: la pestaña "Mensajes" quedó configurada.');
+  // Mensaje en el "Registro de ejecución" del editor (sin ventanas emergentes que bloqueen la ejecución)
+  console.log('Listo: la pestaña "Mensajes" quedó configurada.');
 }
 
 /* Prueba interna desde el editor: guarda una fila de prueba y envía el aviso */
