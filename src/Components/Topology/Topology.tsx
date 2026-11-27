@@ -448,7 +448,7 @@ export const Topology = () => {
       });
 
       // nodos (de lejos a cerca)
-      const order = proj.map((p, i) => i).filter((i) => nodes[i].shell !== 2).sort((a, b) => proj[a].z - proj[b].z);
+      const order = proj.map((_p, i) => i).filter((i) => nodes[i].shell !== 2).sort((a, b) => proj[a].z - proj[b].z);
       const baseR = Math.max(small ? 1.9 : 1.7, R * 0.016);
       order.forEach((i) => {
         const n = nodes[i];
@@ -488,7 +488,7 @@ export const Topology = () => {
       ctx.globalAlpha = 1;
 
       // etiquetas ancladas
-      LABELS.forEach((l, k) => {
+      LABELS.forEach((_l, k) => {
         const el = chipRefs.current[k];
         if (!el) return;
         const i = anchorIdx[k];
