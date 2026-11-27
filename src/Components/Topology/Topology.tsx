@@ -245,18 +245,39 @@ export const Topology = () => {
         }
         return;
       }
+      // Táctil: el dedo hace de "cursor" (ilumina e inclina) y al arrastrar en horizontal gira la red.
+      // Son movimientos que inicia el usuario, por eso funcionan también con "reducir movimiento".
       if (drag && e.pointerId === drag.id) {
         const dx = l.x - drag.x;
         if (Math.abs(dx) > 6 || Math.abs(l.y - drag.y) > 6) drag.moved = true;
-        if (!reduce) dragVel = dx * 0.006;
+        dragVel = dx * (reduce ? 0.003 : 0.006);
         drag.x = l.x;
         drag.y = l.y;
+        touchAt(l.x, l.y);
       }
+    };
+    const touchAt = (x: number, y: number) => {
+      window.clearTimeout(releaseTimer);
+      pointer.x = x;
+      pointer.y = y;
+      pointer.inside = true;
+      pointer.tx = (x / W - 0.5) * 2 * (reduce ? 0.4 : 0.8);
+      pointer.ty = (y / H - 0.5) * 2 * (reduce ? 0.4 : 0.8);
+    };
+    let releaseTimer = 0;
+    const releaseTouch = () => {
+      window.clearTimeout(releaseTimer);
+      releaseTimer = window.setTimeout(() => {
+        pointer.inside = false;
+        pointer.x = pointer.y = -9999;
+        pointer.tx = pointer.ty = 0;
+      }, 700);
     };
     const onDown = (e: PointerEvent) => {
       if (e.pointerType === "mouse") return;
       const l = local(e);
       drag = { x: l.x, y: l.y, moved: false, id: e.pointerId };
+      touchAt(l.x, l.y);
     };
     const onUp = (e: PointerEvent) => {
       const l = local(e);
@@ -264,8 +285,9 @@ export const Topology = () => {
         if (!reduce) flashAround(nearestNode(l.x, l.y));
         return;
       }
-      if (drag && !drag.moved && !reduce) flashAround(nearestNode(l.x, l.y));
+      if (drag && !drag.moved) flashAround(nearestNode(l.x, l.y));
       drag = null;
+      releaseTouch();
     };
     const onLeave = (e: PointerEvent) => {
       if (e.pointerType === "mouse") {
@@ -277,7 +299,11 @@ export const Topology = () => {
     canvas.addEventListener("pointermove", onMove);
     canvas.addEventListener("pointerdown", onDown);
     canvas.addEventListener("pointerup", onUp);
-    canvas.addEventListener("pointercancel", () => (drag = null));
+    const onCancel = () => {
+      drag = null;
+      releaseTouch();
+    };
+    canvas.addEventListener("pointercancel", onCancel);
     canvas.addEventListener("pointerleave", onLeave);
 
     // ---------- Paquetes de luz ----------
@@ -313,6 +339,7 @@ export const Topology = () => {
     type Proj = { sx: number; sy: number; z: number; s: number };
     let proj: Proj[] = [];
     const core: Proj = { sx: 0, sy: 0, z: 0, s: 1 };
+    const wander = { x: -9999, y: -9999 };
     let rotOuter = 0;
     let rotInner = 0;
     let rotDust = 0;
@@ -357,6 +384,10 @@ export const Topology = () => {
         return project(n.p, rotDust + tiltY * 0.4, tiltX * 0.5, 1);
       });
       const c = project({ x: 0, y: 0, z: 0 }, 0, 0, 1);
+      // foco de luz automático (solo pantallas táctiles, mientras no se toca la red)
+      const wt = (now / 1000) * (reduce ? 0.35 : 1);
+      wander.x = W / 2 + Math.sin(wt * 0.45) * R * 0.85;
+      wander.y = H / 2 + Math.sin(wt * 0.62 + 1.3) * R * 0.8;
       core.sx = c.sx;
       core.sy = c.sy;
 
@@ -462,7 +493,10 @@ export const Topology = () => {
         let hover = 0;
         if (pointer.inside) {
           const dist = Math.hypot(p.sx - pointer.x, p.sy - pointer.y);
-          hover = Math.max(0, 1 - dist / 90);
+          hover = Math.max(0, 1 - dist / (small ? 75 : 90));
+        } else if (!fine) {
+          const dist = Math.hypot(p.sx - wander.x, p.sy - wander.y);
+          hover = Math.max(0, 1 - dist / (small ? 70 : 85)) * 0.75;
         }
         const r = baseR * n.size * (0.6 + d * 0.75) * (1 + hover * 0.8 + n.flash * 0.6);
         const glow = Math.max(n.flash, hover * 0.8, n.anchor ? 0.45 : 0);
@@ -476,7 +510,7 @@ export const Topology = () => {
         ctx.beginPath();
         ctx.arc(p.sx, p.sy, r, 0, Math.PI * 2);
         ctx.fill();
-        if (n.flash > 0.05 && !reduce) {
+        if (n.flash > 0.05) {
           ctx.globalAlpha = n.flash * 0.6;
           ctx.strokeStyle = colors.teal;
           ctx.lineWidth = 1;
@@ -553,6 +587,8 @@ export const Topology = () => {
       canvas.removeEventListener("pointerdown", onDown);
       canvas.removeEventListener("pointerup", onUp);
       canvas.removeEventListener("pointerleave", onLeave);
+      canvas.removeEventListener("pointercancel", onCancel);
+      window.clearTimeout(releaseTimer);
     };
   }, []);
 

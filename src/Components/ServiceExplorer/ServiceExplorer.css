@@ -792,16 +792,70 @@
   }
 }
 
-/* Movimiento reducido: sin entradas ni efectos 3D, el contenido aparece directamente */
-@media (prefers-reduced-motion: reduce) {
-  .svx-filter,
-  .svx-item,
-  .svx-panel {
-    opacity: 1;
-    transform: none;
+/* ---------- Pantallas táctiles (celular y tableta) ----------
+   Equivalentes de los efectos que en computador dependen del cursor. */
+
+/* foco de luz al tocar un servicio */
+.svx-item.is-pressed::before {
+  opacity: 1;
+}
+.svx-includes li:active {
+  border-color: color-mix(in srgb, var(--acc) 50%, var(--line));
+  transform: translateY(-2px);
+}
+
+@media (hover: none) {
+  /* todos los íconos visibles se animan (no hay cursor que los active) */
+  .svx-item .svc-ico * {
+    animation-play-state: running;
   }
-  .svx-media__frame {
-    transform: none;
+
+  /* la foto respira suavemente y un destello la recorre al cambiar de servicio */
+  .svx-media__frame img {
+    animation:
+      svx-img 0.9s cubic-bezier(0.22, 1, 0.36, 1) both,
+      svx-drift 9s ease-in-out 0.9s infinite alternate;
+  }
+  .svx-media__sheen {
+    opacity: 1;
+    background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.45) 50%, transparent 65%);
+    background-size: 260% 100%;
+    background-position: 140% 0;
+    animation: svx-sweep 1.3s ease-in-out 0.5s both;
+  }
+  .svx-media:active .svx-media__frame {
+    transition-duration: 0.15s;
+  }
+
+  /* el botón principal muestra su destello cada pocos segundos */
+  .svx-cta::before {
+    animation: svx-cta-sweep 4.5s ease-in-out 1.2s infinite;
+  }
+  .svx-cta:active::before {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes svx-drift {
+  from {
+    transform: scale(1.06) translate(0, 0);
+  }
+  to {
+    transform: scale(1.12) translate(-1.5%, -1%);
+  }
+}
+@keyframes svx-sweep {
+  to {
+    background-position: -40% 0;
+  }
+}
+@keyframes svx-cta-sweep {
+  0%,
+  70% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
   }
 }
 

@@ -33,6 +33,7 @@ export const ServiceExplorer = () => {
   const listRef = useRef<HTMLDivElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
   const swipe = useRef<{ x: number; y: number } | null>(null);
+  const mediaTouch = useRef(false);
 
   const visible = useMemo(() => (filter === "all" ? services : services.filter((s) => s.group === filter)), [filter]);
   const index = Math.max(0, visible.findIndex((s) => s.id === selectedId));
@@ -117,9 +118,22 @@ export const ServiceExplorer = () => {
     e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
   };
 
+  // Equivalente táctil: el foco de luz aparece donde se toca
+  const onItemDown = (e: PointerEvent<HTMLButtonElement>) => {
+    if (e.pointerType === "mouse") return;
+    const el = e.currentTarget;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty("--mx", `${e.clientX - r.left}px`);
+    el.style.setProperty("--my", `${e.clientY - r.top}px`);
+    el.classList.add("is-pressed");
+    window.setTimeout(() => el.classList.remove("is-pressed"), 650);
+  };
+
   // Profundidad 3D de la foto según la posición del cursor
   const onMediaMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (e.pointerType !== "mouse" || !mediaRef.current) return;
+    if (!mediaRef.current) return;
+    // táctil: la foto se inclina mientras el dedo está apoyado sobre ella
+    if (e.pointerType !== "mouse" && !mediaTouch.current) return;
     const r = mediaRef.current.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width - 0.5;
     const py = (e.clientY - r.top) / r.height - 0.5;
@@ -127,6 +141,15 @@ export const ServiceExplorer = () => {
     mediaRef.current.style.setProperty("--ry", `${(px * 9).toFixed(2)}deg`);
     mediaRef.current.style.setProperty("--gx", `${((px + 0.5) * 100).toFixed(1)}%`);
     mediaRef.current.style.setProperty("--gy", `${((py + 0.5) * 100).toFixed(1)}%`);
+  };
+  const onMediaDown = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === "mouse") return;
+    mediaTouch.current = true;
+    onMediaMove(e);
+  };
+  const onMediaUp = () => {
+    mediaTouch.current = false;
+    onMediaLeave();
   };
   const onMediaLeave = () => {
     mediaRef.current?.style.setProperty("--rx", "0deg");
@@ -182,6 +205,7 @@ export const ServiceExplorer = () => {
                 style={{ "--i": i } as CSSProperties}
                 onClick={() => select(s.id)}
                 onPointerMove={onItemMove}
+                onPointerDown={onItemDown}
               >
                 <span className={`svx-item__icon${on ? " is-live" : ""}`}>
                   <ItemIcon />
@@ -208,7 +232,15 @@ export const ServiceExplorer = () => {
           onPointerCancel={() => (swipe.current = null)}
         >
           <div key={current.id + lang} className={`svx-panel__inner ${dir === 1 ? "from-right" : "from-left"}`}>
-            <div ref={mediaRef} className="svx-media" onPointerMove={onMediaMove} onPointerLeave={onMediaLeave}>
+            <div
+              ref={mediaRef}
+              className="svx-media"
+              onPointerMove={onMediaMove}
+              onPointerLeave={onMediaLeave}
+              onPointerDown={onMediaDown}
+              onPointerUp={onMediaUp}
+              onPointerCancel={onMediaUp}
+            >
               <div className="svx-media__frame">
                 <img src={current.image} alt="" draggable={false} />
                 <span className="svx-media__sheen" aria-hidden="true" />
