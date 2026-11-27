@@ -1,0 +1,25 @@
+
+> networkingtic@0.0.0 build
+> tsc -b && vite build
+
+[36mvite v5.4.8 [32mbuilding for production...[36m[39m
+transforming...
+[32m✓[39m 1096 modules transformed.
+rendering chunks...
+computing gzip size...
+[2mdist/[22m[32mversion.json                                 [39m[1m[2m  0.03 kB[22m[1m[22m[2m │ gzip:   0.05 kB[22m
+[2mdist/[22m[32mindex.html                                   [39m[1m[2m  2.31 kB[22m[1m[22m[2m │ gzip:   1.07 kB[22m
+[2mdist/[22m[2massets/[22m[32mlogo-networking-tic-CYRBRpHT.webp     [39m[1m[2m 44.30 kB[22m[1m[22m
+[2mdist/[22m[2massets/[22m[32mwindowsServerPopup-Cc6rmJMQ.jpg       [39m[1m[2m114.09 kB[22m[1m[22m
+[2mdist/[22m[2massets/[22m[32msoporte-CWzM8pn-.jpg                  [39m[1m[2m119.09 kB[22m[1m[22m
+[2mdist/[22m[2massets/[22m[32msistemasAlmacenamiento-l2s8yOk9.webp  [39m[1m[2m123.51 kB[22m[1m[22m
+[2mdist/[22m[2massets/[22m[32mcableadoEstructurado-BOo-taRX.jpg     [39m[1m[2m124.81 kB[22m[1m[22m
+[2mdist/[22m[2massets/[22m[32mkasperky-parnet-xUuoCdxI.jpg          [39m[1m[2m139.87 kB[22m[1m[22m
+[2mdist/[22m[2massets/[22m[32mmantenimiento_2_popup-CutwhDQF.jpg    [39m[1m[2m140.18 kB[22m[1m[22m
+[2mdist/[22m[2massets/[22m[32mredes_popup-zuNxCfN9.jpg              [39m[1m[2m141.57 kB[22m[1m[22m
+[2mdist/[22m[2massets/[22m[32mseguridadIT_popup-CmeSPxlc.jpg        [39m[1m[2m150.75 kB[22m[1m[22m
+[2mdist/[22m[2massets/[22m[32mvision-mision-KklwJqqy.jpg            [39m[1m[2m155.53 kB[22m[1m[22m
+[2mdist/[22m[2massets/[22m[32mvirtualizacion_popup-CFZPq4el.jpg     [39m[1m[2m177.51 kB[22m[1m[22m
+[2mdist/[22m[2massets/[22m[35mindex-1e5Iu3qp.css                    [39m[1m[2m 37.51 kB[22m[1m[22m[2m │ gzip:   8.51 kB[22m
+[2mdist/[22m[2massets/[22m[36mindex-DzL8_Qy3.js                     [39m[1m[2m465.43 kB[22m[1m[22m[2m │ gzip: 153.11 kB[22m
+[32m✓ built in 3.06s[39m
