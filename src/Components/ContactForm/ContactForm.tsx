@@ -127,7 +127,8 @@ export const ContactForm = () => {
         validate={validate}
         onSubmit={async (values, { resetForm, setErrors, setTouched }) => {
           const ok = await send(values, (e) => {
-            setTouched({ Nombre: true, Email: true, Telefono: true, Mensaje: true });
+            // false = no volver a validar en la página (si no, borraría el error que envió el servidor)
+            setTouched({ Nombre: true, Email: true, Telefono: true, Mensaje: true }, false);
             setErrors(e);
           });
           if (ok) resetForm();
