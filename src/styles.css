@@ -1,0 +1,238 @@
+/* ==========================================================
+   NetWorking TIC — estilos globales
+   Tema claro y oscuro con variables CSS (data-theme en <html>)
+   ========================================================== */
+
+:root {
+  --bg: #f3f6f8;
+  --surface: #ffffff;
+  --surface-2: #e9eff3;
+  --ink: #0d2131;
+  --muted: #506273;
+  --line: #d6dfe6;
+  --brand: #0077b6;
+  --brand-ink: #ffffff;
+  --brand-soft: #dceefa;
+  --deep: #0a2a40; /* banda azul profundo (igual en ambos temas) */
+  --deep-ink: #e6f1f8;
+  --signal: #18a66b; /* estado "en línea" */
+
+  --font-display: "Bricolage Grotesque", "IBM Plex Sans", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+
+  --step--1: 0.875rem;
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: clamp(1.5rem, 1.2rem + 1vw, 1.875rem);
+  --step-3: clamp(2rem, 1.4rem + 2.2vw, 2.75rem);
+  --step-4: clamp(2.4rem, 1.4rem + 3.6vw, 4.1rem);
+
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --max: 1200px;
+  --radius-s: 4px;
+  --radius-m: 10px;
+  --nav-h: 72px;
+}
+
+:root[data-theme="dark"] {
+  --bg: #08131d;
+  --surface: #0f1f2c;
+  --surface-2: #132838;
+  --ink: #e4edf4;
+  --muted: #93a6b6;
+  --line: #1f3445;
+  --brand: #4db4ee;
+  --brand-ink: #06121c;
+  --brand-soft: #10314a;
+  --deep: #0c2436;
+  --deep-ink: #e6f1f8;
+  --signal: #35d08f;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-padding-top: calc(var(--nav-h) + 16px);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 8px;
+  z-index: 2000;
+  background: var(--brand);
+  color: var(--brand-ink);
+  padding: 8px 14px;
+  border-radius: var(--radius-s);
+}
+.skip-link:focus {
+  left: 8px;
+}
+
+/* ---------- Estructura ---------- */
+
+.wrap {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.page {
+  padding-top: var(--nav-h);
+  min-height: 70vh;
+}
+
+.section {
+  padding-block: clamp(4rem, 8vw, 7rem);
+}
+
+.section-head {
+  display: grid;
+  gap: 1rem;
+  max-width: 44rem;
+  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.section-head h2 {
+  font-size: var(--step-3);
+}
+
+.lead {
+  font-size: var(--step-1);
+  color: var(--muted);
+  line-height: 1.55;
+  max-width: 40rem;
+}
+
+/* ---------- Botones ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0 1.4rem;
+  border-radius: var(--radius-s);
+  font: 600 var(--step-0) / 1 var(--font-body);
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--brand);
+  color: var(--brand-ink);
+}
+.btn-primary:hover {
+  background: color-mix(in srgb, var(--brand) 86%, var(--ink));
+}
+
+.btn-ghost {
+  border-color: var(--line);
+  color: var(--ink);
+  background: transparent;
+}
+.btn-ghost:hover {
+  border-color: var(--ink);
+}
+
+.btn-light {
+  background: var(--deep-ink);
+  color: var(--deep);
+}
+.btn-light:hover {
+  background: #ffffff;
+}
+
+.text-link {
+  font-weight: 600;
+  color: var(--brand);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+}
+.text-link:hover {
+  color: var(--ink);
+}
+
+/* ---------- Encabezado de páginas internas ---------- */
+
+.page-head {
+  padding-block: clamp(3.5rem, 8vw, 6rem) clamp(2.5rem, 5vw, 4rem);
+  border-bottom: 1px solid var(--line);
+}
+.page-head h1 {
+  font-size: var(--step-4);
+  margin-bottom: 1.25rem;
+  max-width: 18ch;
+}
+
+/* ---------- Banda azul profunda ---------- */
+
+.band {
+  background: var(--deep);
+  color: var(--deep-ink);
+}
+.band .lead {
+  color: color-mix(in srgb, var(--deep-ink) 75%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

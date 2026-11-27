@@ -1,78 +1,76 @@
-import { Facebook } from "@mui/icons-material";
-import { Box, Container, Grid2, Link, Typography } from "@mui/material";
-import logo from "@assets/logo4.jpeg";
-import "../Footer/footerStyle.css";
+import { Link } from "react-router-dom";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { TikTokIcon } from "../IconsCustom/TikTokIcon";
-import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
-import { Link as RouterLink } from "react-router-dom";
+import logoMark from "@assets/logo-mark.webp";
+import { useLanguage } from "../../i18n/LanguageContext";
+import { CONTACT } from "../../data/contact";
+import "./Footer.css";
 
 export const Footer = () => {
+  const { t } = useLanguage();
   return (
-    <footer className="footer">
-      <Container>
-        <Grid2 container spacing={4}>
-          <Grid2 size={{ md: 4, xs: 12 }}>
-            <Box className="footer-logo">
-              <img src={logo} alt="Logo de la empresa" />
-            </Box>
-          </Grid2>
-          <Grid2 size={{ md: 4, xs: 12 }}>
-            <Box className="footer-links">
-              <Link component={RouterLink} to="/" color="inherit" underline="none">
-                Inicio
-              </Link>
-              <Link component={RouterLink} to="/servicios" color="inherit" underline="none">
-                Servicios
-              </Link>
-              <Link component={RouterLink} to="/conocenos" color="inherit" underline="none">
-                Quiénes somos
-              </Link>
-              <Link component={RouterLink} to="/contactanos" color="inherit" underline="none">
-                Contáctanos
-              </Link>
-              <Typography>Bogotá, Colombia</Typography>
-            </Box>
-          </Grid2>
-          <Grid2 size={{ md: 4, xs: 12 }}>
-            <Box className="footer-social">
-              <Typography variant="h6">Síguenos</Typography>
-              <Link
-                href="https://www.facebook.com/profile.php?id=100091906721223"
-                color="inherit"
-                underline="none"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Box className="container-icons">
-                  <Facebook />
-                  <Typography>&nbsp;Facebook</Typography>
-                </Box>
-              </Link>
-              <Link
-                href="https://vm.tiktok.com/ZMhx1pWLA/"
-                color="inherit"
-                underline="none"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Box className="container-icons">
-                  <TikTokIcon />
-                  <Typography>TikTok</Typography>
-                </Box>
-              </Link>
-              <Link href="tel:+573246365743" color="inherit" underline="none">
-                <Box className="container-icons">
-                  <ContactPhoneIcon />
-                  <Typography>&nbsp;+57 324 636 5743</Typography>
-                </Box>
-              </Link>
-              <Typography variant="body2" sx={{ mt: 2, opacity: 0.8 }}>
-                © {new Date().getFullYear()} NETWORKING TIC S.A.S
-              </Typography>
-            </Box>
-          </Grid2>
-        </Grid2>
-      </Container>
+    <footer className="site-footer">
+      <div className="wrap site-footer__grid">
+        <div className="site-footer__brand">
+          <Link to="/" className="brand" aria-label="NetWorking TIC">
+            <img src={logoMark} alt="" width={36} height={36} />
+            <span className="brand__name">
+              NetWorking <span>TIC</span>
+            </span>
+          </Link>
+          <p>{t.footer.tagline}</p>
+        </div>
+
+        <nav aria-label={t.footer.sitemap}>
+          <h2>{t.footer.sitemap}</h2>
+          <Link to="/">{t.nav.home}</Link>
+          <Link to="/servicios">{t.nav.services}</Link>
+          <Link to="/partners">{t.nav.partners}</Link>
+          <Link to="/conocenos">{t.nav.about}</Link>
+          <Link to="/contactanos">{t.nav.contact}</Link>
+        </nav>
+
+        <div>
+          <h2>{t.footer.contact}</h2>
+          <a href={`tel:${CONTACT.phoneE164}`}>{CONTACT.phoneDisplay}</a>
+          <a href={CONTACT.whatsappUrl(t.whatsapp.message)} target="_blank" rel="noopener noreferrer">
+            WhatsApp
+          </a>
+          <span>{t.contactPage.locationValue}</span>
+        </div>
+
+        <div>
+          <h2>{t.footer.social}</h2>
+          <div className="site-footer__social">
+            <a href={CONTACT.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+              <FacebookIcon />
+            </a>
+            <a href={CONTACT.tiktok} target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+              <TikTokIcon />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div className="wrap site-footer__legal">
+        © {new Date().getFullYear()} NETWORKING TIC S.A.S. {t.footer.rights}
+      </div>
     </footer>
+  );
+};
+
+export const WhatsAppButton = () => {
+  const { t } = useLanguage();
+  return (
+    <a
+      className="whatsapp-fab"
+      href={CONTACT.whatsappUrl(t.whatsapp.message)}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={t.whatsapp.label}
+      title={t.whatsapp.label}
+    >
+      <WhatsAppIcon />
+    </a>
   );
 };

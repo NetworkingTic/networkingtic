@@ -1,0 +1,99 @@
+.topology {
+  margin: 0;
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  padding: 3.5rem 1.25rem 1.25rem;
+  background-color: var(--surface);
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: -1px -1px;
+  /* atenúa la cuadrícula hacia los bordes */
+  box-shadow: inset 0 0 80px 40px var(--surface);
+}
+
+.topology svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.topology__status {
+  position: absolute;
+  top: 1rem;
+  left: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--signal);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--signal) 60%, transparent);
+  animation: pulse 2.4s ease-out infinite;
+}
+@keyframes pulse {
+  to {
+    box-shadow: 0 0 0 10px transparent;
+  }
+}
+
+.topology__link {
+  fill: none;
+  stroke: var(--muted);
+  stroke-opacity: 0.45;
+  stroke-width: 1.5;
+}
+
+.topology__packet {
+  fill: var(--brand);
+}
+
+.topology__node {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font: 500 13px/1.1 var(--font-body);
+}
+.topology__node svg {
+  color: var(--brand);
+  flex-shrink: 0;
+}
+.topology__node span {
+  flex: 1;
+  min-width: 0;
+}
+.topology__node.is-core {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: var(--brand-ink);
+  font-weight: 600;
+}
+.topology__node.is-core svg {
+  color: var(--brand-ink);
+}
+
+.topology__led {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--signal);
+  flex-shrink: 0;
+}
+.topology__node.is-core .topology__led {
+  background: var(--brand-ink);
+}

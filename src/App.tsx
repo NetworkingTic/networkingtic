@@ -1,86 +1,75 @@
-import "./global.css";
-import { Navbar } from "./Components/Navbar/Navbar";
-import { Home } from "./Pages/Home/Home";
-import { FloatingButtons } from "./Components/FloatingButtons/FloatingButton";
-import { createTheme, ThemeProvider } from "@mui/material";
-import { green } from "@mui/material/colors";
 import { useEffect } from "react";
-import { Navigate, Route, BrowserRouter as Router, Routes, useLocation } from "react-router-dom";
-import { Footer } from "./Components/Footer/Footer";
-import { Contactanos } from "./Pages/Contactanos";
-import { Nosotros } from "./Pages/Nosotros";
+import { BrowserRouter as Router, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { ThemeModeProvider } from "./theme/ThemeContext";
+import { LanguageProvider, useLanguage } from "./i18n/LanguageContext";
+import { Navbar } from "./Components/Navbar/Navbar";
+import { Footer, WhatsAppButton } from "./Components/Footer/Footer";
+import { Home } from "./Pages/Home";
+import { Servicios } from "./Pages/Servicios";
 import { Partners } from "./Pages/Partners";
-import { Services } from "./Pages/Services/Services";
-import AnimatedGraphBackground from "./Components/NetWork/NetworkAnimation";
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#0077B6",
-      contrastText: "#ffffff", // Color de texto blanco para botones primarios
-    },
-    secondary: {
-      main: green[500],
-      contrastText: "#ffffff", // Color de texto blanco para botones secundarios
-    },
-    text: {
-      primary: "#ffffff", // Color de texto principal blanco
-      secondary: "#000000", // Color de texto secundario blanco
-    },
-    action: {
-      active: "#ffffff", // Color de texto activo blanco
-    },
-  },
-  typography: {
-    fontFamily: 'Open Sans',
-  },
-});
+import { Nosotros } from "./Pages/Nosotros";
+import { Contactanos } from "./Pages/Contactanos";
+import "./styles.css";
 
-// Al cambiar de sección, vuelve al inicio de la página y actualiza el título de la pestaña
-const TITLES: Record<string, string> = {
-  "/": "NetWorking TIC | Soporte IT, redes y ciberseguridad en Bogotá",
-  "/servicios": "Servicios | NetWorking TIC",
-  "/partners": "Partners Kaspersky | NetWorking TIC",
-  "/conocenos": "Nosotros | NetWorking TIC",
-  "/contactanos": "Contáctanos | NetWorking TIC",
+// Al cambiar de página: título de la pestaña en el idioma activo y scroll al inicio (o a la sección #ancla).
+const RouteEffects = () => {
+  const { pathname, hash } = useLocation();
+  const { t, lang } = useLanguage();
+
+  useEffect(() => {
+    const titles: Record<string, string> = {
+      "/": t.meta.home,
+      "/servicios": t.meta.services,
+      "/partners": t.meta.partners,
+      "/conocenos": t.meta.about,
+      "/contactanos": t.meta.contact,
+    };
+    document.title = titles[pathname] ?? t.meta.home;
+  }, [pathname, lang, t]);
+
+  useEffect(() => {
+    if (hash) {
+      // Espera a que la página pinte antes de buscar la sección
+      requestAnimationFrame(() => document.getElementById(hash.slice(1))?.scrollIntoView());
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
+
+  return null;
 };
 
-const RouteEffects = () => {
-  const { pathname } = useLocation();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    document.title = TITLES[pathname] ?? TITLES["/"];
-  }, [pathname]);
-  return null;
+const SkipLink = () => {
+  const { lang } = useLanguage();
+  return (
+    <a className="skip-link" href="#contenido">
+      {lang === "es" ? "Saltar al contenido" : "Skip to content"}
+    </a>
+  );
 };
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <RouteEffects />
-      <AnimatedGraphBackground
-        width="100%"
-        height="100%"
-        nodeColor="#3498db"
-        edgeColor="#7f8c8d"
-        backgroundColor="#ffffff"
-      />
-        <Navbar />
-        <div className="main-content">
+    <ThemeModeProvider>
+      <LanguageProvider>
+        <Router>
+          <RouteEffects />
+          <SkipLink />
+          <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/servicios" element={<Services />} />
+            <Route path="/servicios" element={<Servicios />} />
             <Route path="/partners" element={<Partners />} />
             <Route path="/conocenos" element={<Nosotros />} />
             <Route path="/contactanos" element={<Contactanos />} />
             <Route path="/nosotros" element={<Navigate to="/conocenos" replace />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-        </div>
-        <FloatingButtons />
-        <Footer />
-      </Router>
-    </ThemeProvider>
+          <Footer />
+          <WhatsAppButton />
+        </Router>
+      </LanguageProvider>
+    </ThemeModeProvider>
   );
 }
 

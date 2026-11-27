@@ -1,128 +1,117 @@
-import React, { useState } from "react";
-import {
-  AppBar,
-  Box,
-  Button,
-  IconButton,
-  Toolbar,
-  Drawer,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { useEffect, useState } from "react";
+import { Drawer, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import HomeIcon from "@mui/icons-material/Home";
-import MiscellaneousServicesIcon from "@mui/icons-material/MiscellaneousServices";
-import ForumIcon from "@mui/icons-material/Forum";
-import BusinessIcon from "@mui/icons-material/Business";
-import BlurOnIcon from "@mui/icons-material/BlurOn";
-import { Link as RouterLink, useLocation } from "react-router-dom";
-import logo from "@assets/logo4.jpeg";
+import CloseIcon from "@mui/icons-material/Close";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import { Link as RouterLink, NavLink } from "react-router-dom";
+import logoMark from "@assets/logo-mark.webp";
+import { useLanguage } from "../../i18n/LanguageContext";
+import { useThemeMode } from "../../theme/ThemeContext";
 import "./Navbar.css";
 
-const NAV_ITEMS = [
-  { to: "/", label: "Inicio", Icon: HomeIcon },
-  { to: "/servicios", label: "Servicios", Icon: MiscellaneousServicesIcon },
-  { to: "/partners", label: "Partners", Icon: BlurOnIcon },
-  { to: "/conocenos", label: "Nosotros", Icon: BusinessIcon },
-  { to: "/contactanos", label: "Contáctanos", Icon: ForumIcon },
-];
+const LanguageSwitch = () => {
+  const { lang, setLang, t } = useLanguage();
+  return (
+    <div className="lang-switch" role="group" aria-label={t.nav.language}>
+      {(["es", "en"] as const).map((code) => (
+        <button
+          key={code}
+          type="button"
+          className={lang === code ? "is-active" : undefined}
+          aria-pressed={lang === code}
+          onClick={() => setLang(code)}
+          lang={code}
+        >
+          {code.toUpperCase()}
+        </button>
+      ))}
+    </div>
+  );
+};
 
-export const Navbar: React.FC = () => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const { pathname } = useLocation();
+const ThemeToggle = () => {
+  const { mode, toggleMode } = useThemeMode();
+  const { t } = useLanguage();
+  const label = mode === "dark" ? t.nav.switchToLight : t.nav.switchToDark;
+  return (
+    <button type="button" className="icon-btn" onClick={toggleMode} aria-label={label} title={label}>
+      {mode === "dark" ? <LightModeOutlinedIcon fontSize="small" /> : <DarkModeOutlinedIcon fontSize="small" />}
+    </button>
+  );
+};
+
+export const Navbar = () => {
+  const { t } = useLanguage();
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const links = [
+    { to: "/", label: t.nav.home, end: true },
+    { to: "/servicios", label: t.nav.services },
+    { to: "/partners", label: t.nav.partners },
+    { to: "/conocenos", label: t.nav.about },
+    { to: "/contactanos", label: t.nav.contact },
+  ];
 
   return (
-    <AppBar position="fixed" component="nav" aria-label="Menú principal">
-      <Toolbar>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-          }}
-        >
-          <RouterLink to="/" aria-label="Ir al inicio">
-            <img src={logo} alt="NetWorking TIC" className="img-logo" />
-          </RouterLink>
+    <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
+      <div className="wrap site-header__inner">
+        <RouterLink to="/" className="brand" aria-label="NetWorking TIC">
+          <img src={logoMark} alt="" width={36} height={36} />
+          <span className="brand__name">
+            NetWorking <span>TIC</span>
+          </span>
+        </RouterLink>
 
-          {isMobile ? (
-            <>
-              <IconButton
-                color="inherit"
-                edge="end"
-                aria-label="Abrir menú"
-                onClick={() => setDrawerOpen(true)}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Drawer
-                anchor="left"
-                open={drawerOpen}
-                onClose={() => setDrawerOpen(false)}
-              >
-                <Box sx={{ width: 250 }} role="presentation">
-                  <List>
-                    {NAV_ITEMS.map(({ to, label, Icon }) => (
-                      <ListItemButton
-                        key={to}
-                        component={RouterLink}
-                        to={to}
-                        selected={pathname === to}
-                        onClick={() => setDrawerOpen(false)}
-                      >
-                        <ListItemIcon>
-                          <Icon color="primary" />
-                        </ListItemIcon>
-                        <ListItemText
-                          primary={label}
-                          primaryTypographyProps={{ color: "#171b1d" }}
-                        />
-                      </ListItemButton>
-                    ))}
-                  </List>
-                </Box>
-              </Drawer>
-            </>
-          ) : (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexGrow: 1,
-                gap: 4,
-              }}
-            >
-              {NAV_ITEMS.map(({ to, label, Icon }) => (
-                <Button
-                  key={to}
-                  component={RouterLink}
-                  to={to}
-                  color="inherit"
-                  className="navbar-item"
-                  startIcon={<Icon />}
-                  aria-current={pathname === to ? "page" : undefined}
-                  sx={{
-                    fontSize: "1.1rem",
-                    textTransform: "none",
-                    borderBottom: pathname === to ? "2px solid #fff" : "2px solid transparent",
-                    borderRadius: 0,
-                  }}
-                >
-                  {label}
-                </Button>
-              ))}
-            </Box>
-          )}
-        </Box>
-      </Toolbar>
-    </AppBar>
+        <nav className="main-nav" aria-label="Principal">
+          {links.map((l) => (
+            <NavLink key={l.to} to={l.to} end={l.end}>
+              {l.label}
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className="site-header__tools">
+          <LanguageSwitch />
+          <ThemeToggle />
+          <RouterLink to="/contactanos" className="btn btn-primary header-cta">
+            {t.nav.cta}
+          </RouterLink>
+          <IconButton className="menu-btn" aria-label={t.nav.openMenu} onClick={() => setOpen(true)} sx={{ color: "inherit" }}>
+            <MenuIcon />
+          </IconButton>
+        </div>
+      </div>
+
+      <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
+        <div className="mobile-nav">
+          <div className="mobile-nav__top">
+            <LanguageSwitch />
+            <ThemeToggle />
+            <IconButton aria-label={t.nav.closeMenu} onClick={() => setOpen(false)} sx={{ color: "inherit", ml: "auto" }}>
+              <CloseIcon />
+            </IconButton>
+          </div>
+          <nav aria-label="Principal">
+            {links.map((l) => (
+              <NavLink key={l.to} to={l.to} end={l.end} onClick={() => setOpen(false)}>
+                {l.label}
+              </NavLink>
+            ))}
+          </nav>
+          <RouterLink to="/contactanos" className="btn btn-primary" onClick={() => setOpen(false)}>
+            {t.nav.cta}
+          </RouterLink>
+        </div>
+      </Drawer>
+    </header>
   );
 };

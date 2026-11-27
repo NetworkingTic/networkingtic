@@ -1,5 +1,23 @@
-.container-form{
-    background: var(--color-tertiary);
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+.contact-form {
+  display: grid;
+  gap: 1.5rem;
+  justify-items: start;
+}
+.contact-form__grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.contact-form__full {
+  grid-column: 1 / -1;
+}
+.contact-form .btn[disabled] {
+  opacity: 0.7;
+  cursor: progress;
+}
+@media (max-width: 600px) {
+  .contact-form__grid {
+    grid-template-columns: 1fr;
+  }
 }
