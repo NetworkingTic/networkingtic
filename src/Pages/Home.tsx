@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import kasperskyImg from "@assets/kasperky-parnet.jpg";
 import { useLanguage } from "../i18n/LanguageContext";
 import { Topology } from "../Components/Topology/Topology";
-import { ServiceIndex } from "../Components/ServiceIndex/ServiceIndex";
 import { ContactForm } from "../Components/ContactForm/ContactForm";
 import "./Pages.css";
 
@@ -19,36 +18,12 @@ export const Home = () => {
             <Link to="/contactanos" className="btn btn-primary">
               {t.hero.primary}
             </Link>
-            <a href="#servicios" className="btn btn-ghost">
+            <Link to="/servicios" className="btn btn-ghost">
               {t.hero.secondary}
-            </a>
+            </Link>
           </div>
         </div>
         <Topology />
-      </section>
-
-      <section className="facts" aria-label="NetWorking TIC">
-        <ul className="wrap facts__list">
-          {t.facts.map((f) => (
-            <li key={f.title}>
-              <strong>{f.title}</strong>
-              <span>{f.text}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section id="servicios" className="section wrap">
-        <div className="section-head">
-          <h2>{t.servicesSection.title}</h2>
-          <p className="lead">{t.servicesSection.lead}</p>
-        </div>
-        <ServiceIndex />
-        <p className="section-foot">
-          <Link to="/servicios" className="text-link">
-            {t.servicesSection.all}
-          </Link>
-        </p>
       </section>
 
       <section className="section process-section">

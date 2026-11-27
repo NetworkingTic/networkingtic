@@ -10,6 +10,7 @@ import { Partners } from "./Pages/Partners";
 import { Nosotros } from "./Pages/Nosotros";
 import { Contactanos } from "./Pages/Contactanos";
 import { BrandIntro } from "./Components/Intro/BrandIntro";
+import { VersionCheck } from "./Components/VersionCheck/VersionCheck";
 import "./styles.css";
 
 // Al cambiar de página: título de la pestaña en el idioma activo y scroll al inicio (o a la sección #ancla).
@@ -69,6 +70,7 @@ function App() {
           <Footer />
           <WhatsAppButton />
           <BrandIntro />
+          <VersionCheck />
         </Router>
       </LanguageProvider>
     </ThemeModeProvider>
