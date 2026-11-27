@@ -1,0 +1,46 @@
+# Compila la página en cada cambio y guarda el resultado en la rama "build-<rama>".
+# La carpeta "dist" de esa rama (o el zip networkingtic-dist.zip) es lo que se sube a GoDaddy.
+name: Compilar sitio
+
+on:
+  push:
+    branches: [main, rediseno]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Instalar dependencias
+        run: npm ci
+      - name: Compilar
+        id: build
+        run: |
+          set +e
+          npm run build > build.log 2>&1
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          cat build.log
+      - name: Publicar resultado en rama build-${{ github.ref_name }}
+        run: |
+          mkdir -p /tmp/out
+          cp build.log /tmp/out/
+          echo "${{ steps.build.outputs.status }}" > /tmp/out/STATUS
+          echo "${{ github.sha }}" > /tmp/out/COMMIT
+          if [ -d dist ]; then cp -r dist /tmp/out/dist && (cd dist && zip -qr /tmp/out/networkingtic-dist.zip .); fi
+          cd /tmp/out
+          git init -q -b build
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add -A && git commit -qm "Build ${{ github.sha }}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" "build:build-${{ github.ref_name }}"
+      - name: Fallar si la compilación falló
+        if: steps.build.outputs.status != '0'
+        run: exit 1
