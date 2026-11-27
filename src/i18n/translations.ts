@@ -14,7 +14,7 @@ const es = {
   nav: {
     home: "Inicio",
     services: "Servicios",
-    partners: "Kaspersky",
+    partners: "Partner",
     about: "Nosotros",
     contact: "Contacto",
     cta: "Hablemos",
@@ -204,7 +204,7 @@ const en: Dictionary = {
   nav: {
     home: "Home",
     services: "Services",
-    partners: "Kaspersky",
+    partners: "Partner",
     about: "About",
     contact: "Contact",
     cta: "Let's talk",

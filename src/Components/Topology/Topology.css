@@ -1,9 +1,10 @@
+/* Marco del diagrama (igual que antes: cuadrícula técnica y estado "Monitoreo y soporte 24/7") */
 .topology {
   margin: 0;
   position: relative;
   border: 1px solid var(--line);
   border-radius: var(--radius-m);
-  padding: 3.5rem 1.25rem 1.25rem;
+  padding: 3.25rem 0.5rem 0.5rem;
   background-color: var(--surface);
   background-image:
     linear-gradient(var(--line) 1px, transparent 1px),
@@ -12,18 +13,14 @@
   background-position: -1px -1px;
   /* atenúa la cuadrícula hacia los bordes */
   box-shadow: inset 0 0 80px 40px var(--surface);
-}
-
-.topology > svg {
-  width: 100%;
-  height: auto;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .topology__status {
   position: absolute;
   top: 1rem;
   left: 1.25rem;
+  z-index: 2;
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
@@ -46,46 +43,54 @@
   }
 }
 
-.topology__link {
-  fill: none;
-  stroke: var(--muted);
-  stroke-opacity: 0.45;
-  stroke-width: 1.5;
+/* Escena 3D */
+.topology__scene {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.18 / 1;
+}
+.topology__canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  /* permite desplazar la página en vertical y girar la red en horizontal con el dedo */
+  touch-action: pan-y;
+  cursor: crosshair;
 }
 
-.topology__packet {
-  fill: var(--brand);
-}
-
-.topology__node {
-  height: 100%;
-  display: flex;
+/* Etiquetas ancladas a la red */
+.topology__chip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0 0.75rem;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--surface);
+  gap: 0.4rem;
+  padding: 0.32rem 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--brand) 25%, var(--line));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   color: var(--ink);
-  font: 500 13px/1.1 var(--font-body);
+  font: 500 12.5px/1.1 var(--font-body);
+  white-space: nowrap;
+  pointer-events: none;
+  will-change: transform, opacity;
+  box-shadow: 0 6px 18px -10px color-mix(in srgb, var(--brand) 60%, transparent);
 }
-.topology__node svg {
-  width: 18px;
-  height: 18px;
+.topology__chip svg {
+  font-size: 15px;
   color: var(--brand);
-  flex-shrink: 0;
 }
-.topology__node span {
-  flex: 1;
-  min-width: 0;
-}
-.topology__node.is-core {
+.topology__chip.is-core {
   background: var(--brand);
   border-color: var(--brand);
   color: var(--brand-ink);
   font-weight: 600;
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--brand) 16%, transparent), 0 10px 30px -8px color-mix(in srgb, var(--brand) 70%, transparent);
 }
-.topology__node.is-core svg {
+.topology__chip.is-core svg {
   color: var(--brand-ink);
 }
 
@@ -96,6 +101,28 @@
   background: var(--signal);
   flex-shrink: 0;
 }
-.topology__node.is-core .topology__led {
+.topology__chip.is-core .topology__led {
   background: var(--brand-ink);
+}
+
+@media (max-width: 600px) {
+  .topology {
+    padding-top: 2.75rem;
+  }
+  .topology__status {
+    top: 0.85rem;
+    left: 1rem;
+    font-size: 0.8rem;
+  }
+  .topology__scene {
+    aspect-ratio: 1 / 1;
+  }
+  .topology__chip {
+    font-size: 11px;
+    padding: 0.26rem 0.5rem;
+    gap: 0.3rem;
+  }
+  .topology__chip svg {
+    font-size: 13px;
+  }
 }
