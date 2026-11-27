@@ -34,6 +34,9 @@ export const ServiceExplorer = () => {
   const mediaRef = useRef<HTMLDivElement>(null);
   const swipe = useRef<{ x: number; y: number } | null>(null);
   const mediaTouch = useRef(false);
+  const [pressedId, setPressedId] = useState("");
+  const pressTimer = useRef(0);
+  useEffect(() => () => window.clearTimeout(pressTimer.current), []);
 
   const visible = useMemo(() => (filter === "all" ? services : services.filter((s) => s.group === filter)), [filter]);
   const index = Math.max(0, visible.findIndex((s) => s.id === selectedId));
@@ -125,8 +128,10 @@ export const ServiceExplorer = () => {
     const r = el.getBoundingClientRect();
     el.style.setProperty("--mx", `${e.clientX - r.left}px`);
     el.style.setProperty("--my", `${e.clientY - r.top}px`);
-    el.classList.add("is-pressed");
-    window.setTimeout(() => el.classList.remove("is-pressed"), 650);
+    const id = el.dataset.id ?? "";
+    setPressedId(id);
+    window.clearTimeout(pressTimer.current);
+    pressTimer.current = window.setTimeout(() => setPressedId(""), 650);
   };
 
   // Profundidad 3D de la foto según la posición del cursor
@@ -201,7 +206,7 @@ export const ServiceExplorer = () => {
                 aria-selected={on}
                 aria-controls="svx-panel"
                 tabIndex={on ? 0 : -1}
-                className={`svx-item acc-${s.group}${on ? " is-active" : ""}`}
+                className={`svx-item acc-${s.group}${on ? " is-active" : ""}${pressedId === s.id ? " is-pressed" : ""}`}
                 style={{ "--i": i } as CSSProperties}
                 onClick={() => select(s.id)}
                 onPointerMove={onItemMove}
