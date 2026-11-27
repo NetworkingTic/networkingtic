@@ -68,9 +68,9 @@ export const NeuralBackground = ({ className = "" }: { className?: string }) => 
 
     const build = () => {
       small = W < 640;
-      linkDist = small ? 105 : 140;
-      const density = small ? 7000 : 6500;
-      const count = Math.max(24, Math.min(small ? 46 : 120, Math.round((W * H) / density)));
+      linkDist = small ? 120 : 150;
+      const density = small ? 5200 : 5600;
+      const count = Math.max(24, Math.min(small ? 64 : 140, Math.round((W * H) / density)));
       nodes = Array.from({ length: count }, () => {
         const layer = Math.random() < 0.3 ? 0 : Math.random() < 0.6 ? 1 : 2;
         const a = Math.random() * Math.PI * 2;
@@ -93,7 +93,7 @@ export const NeuralBackground = ({ className = "" }: { className?: string }) => 
       build();
     };
 
-    const maxSignals = () => (small ? 10 : 24);
+    const maxSignals = () => (small ? 18 : 34);
     const launch = (from?: number) => {
       if (!nodes.length) return;
       const a = from ?? Math.floor(Math.random() * nodes.length);
@@ -147,7 +147,7 @@ export const NeuralBackground = ({ className = "" }: { className?: string }) => 
 
       spawn -= dt;
       if (spawn <= 0 && signals.length < maxSignals()) {
-        spawn = (small ? 0.35 : 0.18) / motion;
+        spawn = (small ? 0.2 : 0.12) / motion;
         launch();
       }
 
@@ -160,7 +160,7 @@ export const NeuralBackground = ({ className = "" }: { className?: string }) => 
         const b = nodes[j];
         const depth = (LAYERS[a.layer].alpha + LAYERS[b.layer].alpha) / 2;
         const lit = Math.max(a.flash, b.flash);
-        ctx.globalAlpha = (1 - d / linkDist) * (0.22 + lit * 0.5) * depth;
+        ctx.globalAlpha = (1 - d / linkDist) * (0.4 + lit * 0.55) * depth;
         ctx.strokeStyle = a.layer === 2 && b.layer === 2 ? CYAN : BLUE;
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
@@ -216,7 +216,7 @@ export const NeuralBackground = ({ className = "" }: { className?: string }) => 
         const beat = 0.55 + 0.45 * Math.sin(time * (1.2 + n.layer * 0.35) * motion + n.phase);
         const r = (small ? 1.5 : 1.8) * L.size * (1 + n.flash * 0.8);
         const g = r * (5 + beat * 3 + n.flash * 6);
-        ctx.globalAlpha = (0.12 + beat * 0.22 + n.flash * 0.5) * L.alpha;
+        ctx.globalAlpha = (0.2 + beat * 0.3 + n.flash * 0.55) * L.alpha;
         ctx.drawImage(n.layer === 2 ? glowCyan : glowBlue, n.x - g, n.y - g, g * 2, g * 2);
         ctx.globalAlpha = (0.45 + beat * 0.45) * L.alpha;
         ctx.fillStyle = n.flash > 0.4 ? "#e9fbff" : n.layer === 2 ? CYAN : "#7fb8ff";
